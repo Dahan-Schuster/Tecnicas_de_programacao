@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Pessoa
+comment0.text=\n\ Person\ class\n\n\ @author\ Dahan\ Schuster\n\ @version\ 1\n
+comment1.params=name\ age
+comment1.target=Pessoa(java.lang.String,\ int)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Pessoa\n
+comment2.params=age
+comment2.target=void\ setAge(int)
+comment3.params=
+comment3.target=void\ details()
+comment3.text=\n\ Return\ details\ about\ the\ person\n\n\ @return\ String\n
+numComments=4
