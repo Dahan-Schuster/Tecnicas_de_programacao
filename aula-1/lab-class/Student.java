@@ -72,7 +72,10 @@ public class Student
      */
     public String getLoginName()
     {
-        return name.substring(0,4) + id.substring(0,3);
+        String subname = name.length() >= 4 ? name.substring(0,4) : name;
+        String subid = id.length() >= 3 ? id.substring(0,3) : id;
+        
+        return subname + subid;
     }
     
     /**
