@@ -45,6 +45,8 @@ public class CD extends Item
      */
     public void print()
     {
+		System.out.print("CD: ");
+		super.print();
         System.out.println("    " + artist);
         System.out.println("    tracks: " + numberOfTracks);
     }
