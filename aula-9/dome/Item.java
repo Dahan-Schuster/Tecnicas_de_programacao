@@ -8,10 +8,10 @@
  */
 public class Item
 {
-    private String title;
-    private int playingTime;
-    private boolean gotIt;
-    private String comment;
+	protected String title;
+	protected int playingTime;
+	protected boolean gotIt;
+	protected String comment;
 
     /**
      * Initialise the fields of the item.
@@ -66,11 +66,17 @@ public class Item
     public void print()
     {
         System.out.print(title + " (" + playingTime + " mins)");
-        if(gotIt) {
+        printGotIt();
+        System.out.println("    " + comment);
+    }
+
+	/** Show the info of wether the user has the item or not */
+	protected void printGotIt() {
+		System.out.print(" ");
+		if(gotIt) {
             System.out.println("*");
         } else {
             System.out.println();
         }
-        System.out.println("    " + comment);
-    }
+	}
 }
