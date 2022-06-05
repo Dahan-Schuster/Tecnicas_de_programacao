@@ -157,20 +157,21 @@ public class Fox
     {
         List<Location> adjacent = field.adjacentLocations(location);
         Iterator<Location> it = adjacent.iterator();
+        Location lastRabbitLocation = null;
         while(it.hasNext()) {
-            Location where = it.next();
-            Object animal = field.getObjectAt(where);
+            Location currentLocation = it.next();
+            Object animal = field.getObjectAt(currentLocation);
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
-                if(rabbit.isAlive()) { 
+                if(rabbit.isAlive()) {
                     rabbit.setDead();
                     foodLevel = RABBIT_FOOD_VALUE;
                     // Remove the dead rabbit from the field.
-                    return where;
+                    lastRabbitLocation = currentLocation;
                 }
             }
         }
-        return null;
+        return lastRabbitLocation;
     }
     
     /**
