@@ -28,9 +28,7 @@ public class Fox extends Animal
     private static final Random rand = Randomizer.getRandom();
     
     // Individual characteristics (instance fields).
-
-    // The fox's age.
-    private int age;
+	
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
@@ -45,13 +43,12 @@ public class Fox extends Animal
     public Fox(boolean randomAge, Field field, Location location)
     {
         super(field, location);
-        age = 0;
-        if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+        
+		if(randomAge) {
+			setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
-        }
-        else {
-            // leave age at 0
+        } else {
+			setAge(0);
             foodLevel = RABBIT_FOOD_VALUE;
         }
     }
@@ -68,13 +65,13 @@ public class Fox extends Animal
     {
         incrementAge();
         incrementHunger();
-        if(alive) {
+        if(isAlive()) {
             giveBirth(newFoxes);            
             // Move towards a source of food if found.
-            Location newLocation = findFood(location);
+            Location newLocation = findFood(getLocation());
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
-                newLocation = field.freeAdjacentLocation(location);
+                newLocation = getField().freeAdjacentLocation(getLocation());
             }
             // See if it was possible to move.
             if(newLocation != null) {
@@ -84,17 +81,6 @@ public class Fox extends Animal
                 // Overcrowding.
                 setDead();
             }
-        }
-    }
-    
-    /**
-     * Increase the age. This could result in the fox's death.
-     */
-    private void incrementAge()
-    {
-        age++;
-        if(age > MAX_AGE) {
-            setDead();
         }
     }
     
@@ -117,12 +103,12 @@ public class Fox extends Animal
      */
     private Location findFood(Location location)
     {
-        List<Location> adjacent = field.adjacentLocations(location);
+        List<Location> adjacent = getField().adjacentLocations(location);
         Iterator<Location> it = adjacent.iterator();
         Location lastRabbitLocation = null;
         while(it.hasNext()) {
             Location currentLocation = it.next();
-            Object animal = field.getObjectAt(currentLocation);
+            Object animal = getField().getObjectAt(currentLocation);
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
                 if(rabbit.isAlive()) {
@@ -137,43 +123,33 @@ public class Fox extends Animal
         return lastRabbitLocation;
     }
     
-    /**
-     * Check whether or not this fox is to give birth at this step.
-     * New births will be made into free adjacent locations.
-     * @param newFoxes A list to add newly born foxes to.
-     */
-    private void giveBirth(List<Animal> newFoxes)
-    {
-        // New foxes are born into adjacent locations.
-        // Get a list of adjacent free locations.
-        List<Location> free = field.getFreeAdjacentLocations(location);
-        int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            Fox young = new Fox(false, field, loc);
-            newFoxes.add(young);
-        }
-    }
-        
-    /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     * @return The number of births (may be zero).
-     */
-    private int breed()
-    {
-        int births = 0;
-        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
-            births = rand.nextInt(MAX_LITTER_SIZE) + 1;
-        }
-        return births;
-    }
+	/** @return a newborn fox with age 0 */
+	@Override
+	protected Animal getNewYoung(Location loc) {
+		return new Fox(false, getField(), loc);
+	}
 
-    /**
-     * A fox can breed if it has reached the breeding age.
-     */
-    private boolean canBreed()
-    {
-        return age >= BREEDING_AGE;
-    }
+	/** @return número máximo de proles que uma raposa pode gerar por vez */
+	@Override
+	protected int getMaxLitterSize() {
+		return MAX_LITTER_SIZE;
+	}
+
+	/** @return a probabilidade de uma raposa procriar */
+	@Override
+	protected double getBreedingProbability() {
+		return BREEDING_PROBABILITY;
+	}
+
+	/** @return a idade que uma raposa começa a procriar */
+	@Override
+	protected int getBreedingAge() {
+		return BREEDING_AGE;
+	}
+
+	/** @return a idade máxima que uma raposa pode alcançar */
+	@Override
+	protected int getMaxAge() {
+		return MAX_AGE;
+	}
 }
