@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.Random;
 
-public abstract class Animal {
+public abstract class Animal implements Actor {
 
 	// The animals's gge
     private int age;
@@ -25,8 +25,6 @@ public abstract class Animal {
 		this.field = field;
 		setLocation(location);
 	}
-
-	abstract public void act(List<Animal> newAnimals);
 
 	/**
 	 * Define a idade do animal
@@ -70,7 +68,7 @@ public abstract class Animal {
 	 * 
 	 * @return true if the rabbit is still alive.
 	 */
-	public boolean isAlive() {
+	public boolean isActive() {
 		return alive;
 	}
 
@@ -101,7 +99,7 @@ public abstract class Animal {
      * New births will be made into free adjacent locations.
      * @param newAnimals A list to add newly born animals to.
      */
-    protected void giveBirth(List<Animal> newAnimals)
+    protected void giveBirth(List<Actor> newAnimals)
     {
         // New animals are born into adjacent locations.
         // Get a list of adjacent free locations.

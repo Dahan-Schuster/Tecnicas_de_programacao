@@ -46,10 +46,10 @@ public class Rabbit extends Animal
      * @param newRabbits A list to add newly born rabbits to.
      */
 	@Override
-    public void act(List<Animal> newRabbits)
+    public void act(List<Actor> newRabbits)
     {
         incrementAge();
-        if(isAlive()) {
+        if(isActive()) {
             giveBirth(newRabbits);            
             // Try to move into a free location.
             Location newLocation = getField().freeAdjacentLocation(getLocation());

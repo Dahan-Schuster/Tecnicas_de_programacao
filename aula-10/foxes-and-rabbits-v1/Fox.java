@@ -60,12 +60,11 @@ public class Fox extends Animal
      * @param field The field currently occupied.
      * @param newFoxes A list to add newly born foxes to.
      */
-    @Override
-    public void act(List<Animal> newFoxes)
+    public void act(List<Actor> newFoxes)
     {
         incrementAge();
         incrementHunger();
-        if(isAlive()) {
+        if(isActive()) {
             giveBirth(newFoxes);            
             // Move towards a source of food if found.
             Location newLocation = findFood(getLocation());
@@ -111,7 +110,7 @@ public class Fox extends Animal
             Object animal = getField().getObjectAt(currentLocation);
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
-                if(rabbit.isAlive()) {
+                if(rabbit.isActive()) {
                     rabbit.setDead();
                     foodLevel = RABBIT_FOOD_VALUE;
                     // Remove the dead rabbit from the field.
