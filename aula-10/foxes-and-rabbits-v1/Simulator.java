@@ -24,7 +24,7 @@ public class Simulator
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
 
     // Lists of animals in the field
-    private List<Animal> animals;
+    private List<Actor> animals;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -54,13 +54,13 @@ public class Simulator
             width = DEFAULT_WIDTH;
         }
         
-        animals = new ArrayList<Animal>();
+        animals = new ArrayList<>();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Rabbit.class, Color.orange);
-        view.setColor(Fox.class, Color.blue);
+        view.setColor(Rabbit.class, Color.gray);
+        view.setColor(Fox.class, Color.red);
         
         // Setup a valid starting point.
         reset();
@@ -96,12 +96,12 @@ public class Simulator
         step++;
 
         // Provide space for newborn animals.
-        List<Animal> newAnimals = new ArrayList<Animal>();        
+        List<Actor> newAnimals = new ArrayList<>();        
         // Let all animals act.
-        for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
-            Animal animal = it.next();
-            animal.act(newAnimals);
-            if(! animal.isAlive()) {
+        for(Iterator<Actor> it = animals.iterator(); it.hasNext(); ) {
+            Actor actor = it.next();
+            actor.act(newAnimals);
+            if(! actor.isActive()) {
                 it.remove();
             }
         }
@@ -110,6 +110,12 @@ public class Simulator
         animals.addAll(newAnimals);
 
         view.showStatus(step, field);
+
+		try {
+			Thread.sleep(100);
+		} catch (Exception e) {
+			System.out.println("sdfd");
+		}
     }
         
     /**

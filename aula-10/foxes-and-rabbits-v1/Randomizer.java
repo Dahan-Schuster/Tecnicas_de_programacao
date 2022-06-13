@@ -32,7 +32,8 @@ public class Randomizer
             return rand;
         }
         else {
-            return new Random();
+			System.out.println(System.currentTimeMillis());
+            return new Random(System.currentTimeMillis());
         }
     }
     
