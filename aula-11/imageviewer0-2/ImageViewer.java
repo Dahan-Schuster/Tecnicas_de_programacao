@@ -30,8 +30,27 @@ public class ImageViewer
      */
     public void actionPerformed(ActionEvent event) 
     { 
-        System.out.println("Item: " + event.getActionCommand());
+		String action = event.getActionCommand();
+        System.out.println("Item: " + action);
+
+		if (action.equals("Open")) {
+			openFile();
+		} else if (action.equals("Save")) {
+			saveFile();
+		} else if (action.equals("Quit")) {
+			quit();
+		}
     }
+
+	private void openFile(){
+		System.out.println("Open file requested");
+	}
+	private void saveFile(){
+		System.out.println("Save file requested");
+	}
+	private void quit(){
+		System.exit(0);
+	}
 
     
     // ---- swing stuff to build the frame and all its components ----
@@ -62,6 +81,11 @@ public class ImageViewer
     {
         JMenuBar menubar = new JMenuBar();
         frame.setJMenuBar(menubar);
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
         
         // create the File menu
         JMenu fileMenu = new JMenu("File");
@@ -70,6 +94,10 @@ public class ImageViewer
         JMenuItem openItem = new JMenuItem("Open");
         openItem.addActionListener(this);
         fileMenu.add(openItem);
+        
+        JMenuItem saveItem = new JMenuItem("Save");
+        saveItem.addActionListener(this);
+        fileMenu.add(saveItem);
 
         JMenuItem quitItem = new JMenuItem("Quit");
         quitItem.addActionListener(this);
