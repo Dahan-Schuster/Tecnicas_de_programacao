@@ -1,12 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import javax.swing.*;
 
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * ImageViewer is the main class of the image viewer application. It builds and
@@ -153,6 +151,7 @@ public class ImageViewer
         filterList.add(new DarkerFilter("Darker"));
         filterList.add(new LighterFilter("Lighter"));
         filterList.add(new ThresholdFilter("Threshold"));
+        filterList.add(new GrayScaleFilter("Grayscale"));
         
         return filterList;
     }
@@ -165,6 +164,12 @@ public class ImageViewer
     private void makeFrame()
     {
         frame = new JFrame("ImageViewer");
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+
         Container contentPane = frame.getContentPane();
         
         makeMenuBar(frame);

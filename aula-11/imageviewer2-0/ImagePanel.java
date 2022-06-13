@@ -1,6 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-import java.awt.image.*;
 
 /**
  * An ImagePanel is a Swing component that can display an OFImage.
