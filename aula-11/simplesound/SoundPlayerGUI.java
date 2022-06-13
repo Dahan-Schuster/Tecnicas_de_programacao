@@ -6,7 +6,6 @@ import javax.swing.border.*;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import java.io.*;
 
@@ -35,7 +34,7 @@ public class SoundPlayerGUI extends JFrame
      */
     public static void main(String[] args)
     {
-        SoundPlayerGUI gui = new SoundPlayerGUI();
+        new SoundPlayerGUI();
     }
     
     /**
@@ -54,9 +53,8 @@ public class SoundPlayerGUI extends JFrame
      * selection in the list, or if the selected file is not a sound file, 
      * do nothing.
      */
-    private void play()
+    private void play(String filename)
     {
-        String filename = (String)fileList.getSelectedValue();
         if(filename == null) {  // nothing selected
             return;
         }
@@ -221,6 +219,27 @@ public class SoundPlayerGUI extends JFrame
             fileList.setBackground(new Color(0,0,0));
             fileList.setSelectionBackground(new Color(87,49,134));
             fileList.setSelectionForeground(new Color(140,171,226));
+            fileList.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JList fileList = (JList) e.getSource();
+                    
+                    // Verifica se houveram dois cliques rápidos
+                    if (e.getClickCount() == 2) {
+                        // busca o índice da lista na posição do mouse
+                        int index = fileList.locationToIndex(e.getPoint());
+
+                        // seleciona o índice clicado
+                        fileList.setSelectedIndex(index);
+
+                        // busca o arquivo referente ao índice
+                        String filename = (String) fileList.getSelectedValue();
+
+                        // toca o arquivo
+                        play(filename);
+                    }
+                }
+            });
+
             JScrollPane scrollPane = new JScrollPane(fileList);
             scrollPane.setColumnHeaderView(new JLabel("Audio files"));
             leftPane.add(scrollPane, BorderLayout.CENTER);
@@ -260,8 +279,11 @@ public class SoundPlayerGUI extends JFrame
   
             JButton button = new JButton("Play");
             button.addActionListener(new ActionListener() {
-                                   public void actionPerformed(ActionEvent e) { play(); }
-                               });
+                public void actionPerformed(ActionEvent e) {
+                    String filename = (String) fileList.getSelectedValue();
+                    play(filename);
+                }
+            });
             toolbar.add(button);
             
             button = new JButton("Stop");
