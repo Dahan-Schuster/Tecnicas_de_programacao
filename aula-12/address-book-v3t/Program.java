@@ -1,5 +1,9 @@
 public class Program {
 	public static void main(String[] args) {
-		// @TODO: implement main method
+
+		AddressBookInterface interaction = new AddressBookTextInterface();
+		AddressBookDemo demo = new AddressBookDemo(interaction);
+
+		demo.showInterface();
 	}
 }

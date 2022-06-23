@@ -9,14 +9,14 @@
 public class AddressBookDemo
 {
     private AddressBook book;
-    private AddressBookTextInterface interaction;
+    private AddressBookInterface interaction;
 
     /**
      * Setup an AddressBook with sample data.
      * The address book is passed to a GUI to provide
      * a view of the data.
      */
-    public AddressBookDemo()
+    public AddressBookDemo(AddressBookInterface interaction)
     {
         ContactDetails[] sampleDetails = {
             new ContactDetails("david",   "08459 100000", "address 1"),
@@ -30,9 +30,16 @@ public class AddressBookDemo
         };
         book = new AddressBook();
         for(ContactDetails details : sampleDetails) {
-            book.addDetails(details);
+			try {
+				book.addDetails(details);
+			} catch (KeyException keyExc) {
+				System.out.println(keyExc);
+			} catch (Exception exc) {
+				System.out.println("Something went wrong: " + exc.getMessage());
+			}
         }
-        interaction = new AddressBookTextInterface(book);
+        this.interaction = interaction;
+		this.interaction.setBook(book);
     }
 
     /**

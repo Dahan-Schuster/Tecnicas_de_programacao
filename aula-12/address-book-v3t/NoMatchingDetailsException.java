@@ -5,33 +5,23 @@
  * @author David J. Barnes and Michael Kolling.
  * @version 2008.03.30
  */
-public class NoMatchingDetailsException extends Exception
+public class NoMatchingDetailsException extends KeyException
 {
-    // The key with no match.
-    private String key;
-
     /**
      * Store the details in error.
      * @param key The key with no match.
      */
     public NoMatchingDetailsException(String key)
     {
-        this.key = key;
-    }
-
-    /**
-     * @return The key in error.
-     */
-    public String getKey()
-    {
-        return key;
+        super(key);
     }
     
     /**
      * @return A diagnostic string containing the key in error.
      */
+	@Override
     public String toString()
     {
-        return "No details matching: " + key + " were found.";
+        return "No details matching: " + this.key + " were found.";
     }
 }

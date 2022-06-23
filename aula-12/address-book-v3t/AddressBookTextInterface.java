@@ -11,10 +11,8 @@
  * @author David J. Barnes and Michael Kolling.
  * @version 2008.03.30
  */
-public class AddressBookTextInterface
+public class AddressBookTextInterface extends AddressBookInterface
 {
-    // The address book to be viewed and manipulated.
-    private AddressBook book;
     // A parser for handling user commands.
     private Parser parser;
     
@@ -22,9 +20,19 @@ public class AddressBookTextInterface
      * Constructor for objects of class AddressBookTextInterface
      * @param book The address book to be manipulated.
      */
+    public AddressBookTextInterface()
+    {
+		super();
+        parser = new Parser();
+    }
+
+    /**
+     * Constructor for objects of class AddressBookTextInterface
+     * @param book The address book to be manipulated.
+     */
     public AddressBookTextInterface(AddressBook book)
     {
-        this.book = book;
+        super(book);
         parser = new Parser();
     }
     
@@ -71,24 +79,42 @@ public class AddressBookTextInterface
      */
     private void add()
     {
-        System.out.print("Name: ");
-        String name = parser.readLine();
-        System.out.print("Phone: ");
-        String phone = parser.readLine();
-        System.out.print("Address: ");
-        String address = parser.readLine();
-        book.addDetails(new ContactDetails(name, phone, address));
+		try {
+			System.out.print("Name: ");
+			String name = parser.readLine();
+			System.out.print("Phone: ");
+			String phone = parser.readLine();
+			System.out.print("Address: ");
+			String address = parser.readLine();
+			book.addDetails(new ContactDetails(name, phone, address));
+		} catch (Exception e) {
+			printError(e);
+		}
     }
+
+	private void printError(Exception exception) {
+		
+		if (exception instanceof KeyException || exception instanceof IllegalArgumentException) {
+			System.out.println(exception);
+		} else {
+			System.out.println("\n\n***Unkown error ocurred ***\n\n");
+			System.out.println(exception);
+		}
+	}
     
     /**
      * Find an entry matching a key.
      */
     private void get()
     {
-        System.out.println("Type the key of the entry.");
-        String key = parser.readLine();
-        ContactDetails result = book.getDetails(key);
-        System.out.println(result);
+		try {
+			System.out.println("Type the key of the entry.");
+			String key = parser.readLine();
+			ContactDetails result = book.getDetails(key);
+			System.out.println(result);
+		} catch (Exception e) {
+			printError(e);
+		}
     }
     
     /**
@@ -96,9 +122,13 @@ public class AddressBookTextInterface
      */
     private void remove()
     {
-        System.out.println("Type the key of the entry.");
-        String key = parser.readLine();
-        book.removeDetails(key);
+		try {
+			System.out.println("Type the key of the entry.");
+			String key = parser.readLine();
+			book.removeDetails(key);
+		} catch (Exception e) {
+			printError(e);
+		}
     }
     
     /**

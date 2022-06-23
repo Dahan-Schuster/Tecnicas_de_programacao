@@ -32,10 +32,15 @@ public class AddressBook
      * corresponding contact details.
      * @param key The name or number to be looked up.
      * @return The details corresponding to the key.
+	 * @throws NoMatchingDetailsException if the key were not found int the book
      */
     public ContactDetails getDetails(String key)
+		throws NoMatchingDetailsException
     {
-        return book.get(key);
+		if (keyInUse(key))
+        	return book.get(key);
+		else
+			throw new NoMatchingDetailsException(key);
     }
 
     /**
@@ -51,12 +56,23 @@ public class AddressBook
     /**
      * Add a new set of details to the notebook.
      * @param details The details to associate with the person.
+     * @throws IllegalArgumentException If details argument is null.
+     * @throws DuplicateKeyException If either the contact's name or phone is already used
      */
     public void addDetails(ContactDetails details)
+		throws IllegalArgumentException, DuplicateKeyException
     {
         if(details == null) {
             throw new IllegalArgumentException("Null details passed to addDetails.");
         }
+
+		Boolean nameInUse = keyInUse(details.getName());
+		Boolean phoneInUse = keyInUse(details.getPhone());
+		if (nameInUse || phoneInUse) {
+			String key = nameInUse ? details.getName() : details.getPhone();
+			throw new DuplicateKeyException(key);
+		}
+
         book.put(details.getName(), details);
         book.put(details.getPhone(), details);
         numberOfEntries++;
@@ -68,9 +84,11 @@ public class AddressBook
                      This should be a key that is currently in use.
      * @param details The replacement details. Must not be null.
      * @throws IllegalArgumentException If either argument is null.
+     * @throws NoMatchingDetailsException If the key were not found in the book
+     * @throws DuplicateKeyException If something went wrong while replacing the key
      */
-    public void changeDetails(String oldKey,
-                              ContactDetails details)
+    public void changeDetails(String oldKey, ContactDetails details)
+		throws IllegalArgumentException, DuplicateKeyException, NoMatchingDetailsException
     {
         if(details == null) {
             throw new IllegalArgumentException("Null details passed to changeDetails.");
@@ -78,10 +96,9 @@ public class AddressBook
         if(oldKey == null){
             throw new IllegalArgumentException("Null key passed to changeDetails.");
         }
-        if(keyInUse(oldKey)){
-            removeDetails(oldKey);
-            addDetails(details);
-        }
+		
+		removeDetails(oldKey);
+		addDetails(details);
     }
     
     /**
@@ -130,18 +147,19 @@ public class AddressBook
      * The key should be one that is currently in use.
      * @param key One of the keys of the entry to be removed.
      * @throws IllegalArgumentException If the key is null.
+     * @throws NoMatchingDetailsException If the key were not found in the book
      */
     public void removeDetails(String key)
+		throws IllegalArgumentException, NoMatchingDetailsException
     {
         if(key == null){
             throw new IllegalArgumentException("Null key passed to removeDetails.");
         }
-        if(keyInUse(key)) {
-            ContactDetails details = book.get(key);
-            book.remove(details.getName());
-            book.remove(details.getPhone());
-            numberOfEntries--;
-        }
+		
+		ContactDetails details = getDetails(key);
+		book.remove(details.getName());
+		book.remove(details.getPhone());
+		numberOfEntries--;
     }
 
     /**
