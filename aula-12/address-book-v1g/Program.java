@@ -1,9 +1,9 @@
 public class Program {
 	public static void main(String[] args) {
 		AddressBookDemo gui = new AddressBookDemo();
-		// gui.showInterface();
+		gui.showInterface();
 
-		AddressBook book = new AddressBook();
-		book.removeDetails("oi");
+		// AddressBook book = new AddressBook();
+		// book.removeDetails("oi");
 	}
 }
