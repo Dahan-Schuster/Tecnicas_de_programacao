@@ -4,7 +4,10 @@ public class Program {
     public static void main(String[] args) {
         Notebook note = new Notebook();
         Program.fillAndSave(note);
-        Program.readAndList(note);
+        Serializer.saveObjects(note, "serialized_object");
+
+        Notebook saved = (Notebook) Serializer.readObjects("serialized_object");
+        saved.listNotes();
     }
 
     private static void readAndList(Notebook note) {

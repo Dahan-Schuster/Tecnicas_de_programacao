@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,12 +13,10 @@ import java.util.ArrayList;
  * @author David J. Barnes and Michael Kolling.
  * @version 2008.03.30
  */
-public class Notebook
+public class Notebook implements Serializable
 {
     // Storage for an arbitrary number of notes.
     private ArrayList<String> notes;
-	private FileWriter writer;
-	private BufferedReader reader;
 
     /**
      * Perform any initialization that is required for the
@@ -72,7 +71,7 @@ public class Notebook
 
 	public void readFromFile(String filename) {
 		try {
-			reader = new BufferedReader(new FileReader(filename));
+			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			String line = reader.readLine();
 			while(line != null) {
 				storeNote(line);
@@ -86,7 +85,7 @@ public class Notebook
 
 	public void saveToFile(String filename) {
 		try {
-			writer = new FileWriter(filename);
+			FileWriter writer = new FileWriter(filename);
 			for(String note : notes) {
 				writer.write(note + "\n");
 			}
