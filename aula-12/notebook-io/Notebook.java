@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +16,8 @@ public class Notebook
 {
     // Storage for an arbitrary number of notes.
     private ArrayList<String> notes;
+	private FileWriter writer;
+	private BufferedReader reader;
 
     /**
      * Perform any initialization that is required for the
@@ -45,10 +51,7 @@ public class Notebook
      */
     public void removeNote(int noteNumber)
     {
-        if(noteNumber < 0) {
-            // This is not a valid note number, so do nothing.
-        }
-        else if(noteNumber < numberOfNotes()) {
+        if(noteNumber > 0 && noteNumber < numberOfNotes()) {
             // This is a valid note number.
             notes.remove(noteNumber);
         }
@@ -66,4 +69,30 @@ public class Notebook
             System.out.println(note);
         }
     }
+
+	public void readFromFile(String filename) {
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+			String line = reader.readLine();
+			while(line != null) {
+				storeNote(line);
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			System.out.println("An error occurred while trying to save to a file: " + e.getMessage());
+		}
+	}
+
+	public void saveToFile(String filename) {
+		try {
+			writer = new FileWriter(filename);
+			for(String note : notes) {
+				writer.write(note + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("An error occurred while trying to save to a file: " + e.getMessage());
+		}
+	}
 }
