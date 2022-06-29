@@ -1,7 +1,5 @@
 public class Program {
 	public static void main(String[] args) {
-		Demo demo = new Demo();
-
-		demo.pickupTest();
+		// @TODO: implement main method
 	}
 }
