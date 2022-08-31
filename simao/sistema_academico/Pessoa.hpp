@@ -1,7 +1,5 @@
 #pragma once
-
-#include "Universidade.hpp"
-
+	
 class Pessoa {
     private:
         int dia;
@@ -9,7 +7,6 @@ class Pessoa {
         int ano;
         int idade;
         char nome[30];
-        Universidade* pUniversidade;
 
     public:
         Pessoa ();
@@ -18,7 +15,6 @@ class Pessoa {
 
         void calculaIdade(int diaAt, int mesAt, int anoAt);
         int  getIdade();
-        void setUniversidade(Universidade* uni);
         void imprimeDados();
 };
 
